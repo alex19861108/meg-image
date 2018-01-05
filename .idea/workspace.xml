@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac272549-de0b-4df9-b9fa-c204eaba5131" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/meg_image/meg_image.py" afterPath="$PROJECT_DIR$/src/meg_image/meg_image.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +17,8 @@
       <file leaf-file-name="meg_image.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/meg_image/meg_image.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="79" column="20" lean-forward="false" selection-start-line="79" selection-start-column="8" selection-end-line="79" selection-end-column="20" />
+            <state relative-caret-position="164">
+              <caret line="90" column="62" lean-forward="false" selection-start-line="90" selection-start-column="62" selection-end-line="90" selection-end-column="62" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -366,8 +367,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/meg_image/meg_image.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="79" column="20" lean-forward="false" selection-start-line="79" selection-start-column="8" selection-end-line="79" selection-end-column="20" />
+        <state relative-caret-position="164">
+          <caret line="90" column="62" lean-forward="false" selection-start-line="90" selection-start-column="62" selection-end-line="90" selection-end-column="62" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
