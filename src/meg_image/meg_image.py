@@ -5,8 +5,7 @@ import cStringIO
 from PIL import ImageDraw, Image
 
 
-def draw_rects_core(fd_image, rects, fill):
-    draw = ImageDraw.Draw(fd_image)
+def draw_rects_core(draw, rects, fill):
     #Lw, Lh = fd_image.size
     for rect in rects:
         left, top, width, height = rect['left'], rect['top'], rect['width'], rect['height']
@@ -16,8 +15,7 @@ def draw_rects_core(fd_image, rects, fill):
         draw.line((left, top+height, left+width, top+height), fill=fill)
 
 
-def draw_points_core(fd_image, points, fill):
-    draw = ImageDraw.Draw(fd_image)
+def draw_points_core(draw, points, fill):
     ps = []
     for point in points:
         if isinstance(point, dict):
@@ -27,8 +25,7 @@ def draw_points_core(fd_image, points, fill):
     draw.point(ps, fill)
 
 
-def draw_polygon_core(fd_image, points, fill, outline):
-    draw = ImageDraw.Draw(fd_image)
+def draw_polygon_core(draw, points, fill, outline):
     ps = []
     for point in points:
         if isinstance(point, dict):
@@ -42,32 +39,36 @@ class MegImage(object):
     @staticmethod
     def draw_points(points, image_path, saved_path, fill=128):
         fd_image = Image.open(image_path)
-        draw_points_core(fd_image, points, fill)
+        draw = ImageDraw.Draw(fd_image)
+        draw_points_core(draw, points, fill)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
     def draw_points_groups(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
+        draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
             fill = g['fill'] if 'fill' in g else 128
-            draw_points_core(fd_image, points, fill)
+            draw_points_core(draw, points, fill)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
     def draw_polygon(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
+        draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
             fill = g['fill'] if 'fill' in g else 128
             outline = g['outline'] if 'outline' in g else 128
-            draw_polygon_core(fd_image, points, fill, outline)
+            draw_polygon_core(draw, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
     def draw_rects(rects, image_path, saved_path, fill=128):
         fd_image = Image.open(image_path)
-        draw_rects_core(fd_image, rects, fill)
+        draw = ImageDraw.Draw(fd_image)
+        draw_rects_core(draw, rects, fill)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
