@@ -36,8 +36,8 @@ def draw_polygon_core(draw, points, fill, outline):
 
 
 def draw_ellipse_core(draw, points, fill, outline):
-    ps = []
     for point in points:
+        ps = []
         if isinstance(point, dict):
             ps.append((point['x']-1, point['y']-1))
             ps.append((point['x']+1, point['y']+1))
