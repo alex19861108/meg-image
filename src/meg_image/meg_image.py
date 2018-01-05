@@ -1,6 +1,5 @@
 import sys
 import base64
-import urllib2
 import requests
 import cStringIO
 from PIL import ImageDraw, Image
