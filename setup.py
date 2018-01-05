@@ -19,5 +19,5 @@ setup(
     author_email='liuwei02@megvii.com',
     description='megvii image',
     keywords='image',
-    url='',
+    url='http://www.baidu.com'
 )
