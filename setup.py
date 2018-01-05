@@ -19,5 +19,5 @@ setup(
     author_email='liuwei02@megvii.com',
     description='megvii image',
     keywords='image',
-    url='https://wiki.megvii-inc.com/pages/viewpage.action?pageId=20810564'
+    url='',
 )
