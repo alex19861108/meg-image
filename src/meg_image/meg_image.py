@@ -35,6 +35,18 @@ def draw_polygon_core(draw, points, fill, outline):
     draw.polygon(ps, fill, outline)
 
 
+def draw_ellipse_core(draw, points, fill, outline):
+    ps = []
+    for point in points:
+        if isinstance(point, dict):
+            ps.append((point['x']-1, point['y']-1))
+            ps.append((point['x']+1, point['y']+1))
+        elif isinstance(point, tuple):
+            ps.append((point[0]-1, point[1]-1))
+            ps.append((point[0]+1, point[1]+1))
+        draw.ellipse(ps, fill, outline)
+
+
 class MegImage(object):
     @staticmethod
     def draw_points(points, image_path, saved_path, fill=128):
@@ -50,7 +62,7 @@ class MegImage(object):
         for g in groups:
             points = g['points']
             fill = g['fill'] if 'fill' in g else 128
-            draw_points_core(draw, points, fill)
+            draw_points_core(draw, points, fill=fill)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
@@ -62,6 +74,17 @@ class MegImage(object):
             fill = g['fill'] if 'fill' in g else 128
             outline = g['outline'] if 'outline' in g else 128
             draw_polygon_core(draw, points, fill, outline)
+        fd_image.save(saved_path, "JPEG")
+
+    @staticmethod
+    def draw_ellipse(groups, image_path, saved_path):
+        fd_image = Image.open(image_path)
+        draw = ImageDraw.Draw(fd_image)
+        for g in groups:
+            points = g['points']
+            fill = g['fill'] if 'fill' in g else 128
+            outline = g['outline'] if 'outline' in g else 128
+            draw_ellipse_core(draw, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
