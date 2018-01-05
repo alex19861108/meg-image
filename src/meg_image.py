@@ -19,11 +19,24 @@ def draw_rects_core(fd_image, rects, fill):
 
 def draw_points_core(fd_image, points, fill):
     draw = ImageDraw.Draw(fd_image)
+    ps = []
     for point in points:
         if isinstance(point, dict):
-            draw.point((point['x'], point['y']), fill)
+            ps.append((point['x'], point['y']))
         elif isinstance(point, tuple):
-            draw.point(point, fill)
+            ps.append(point)
+    draw.point(ps, fill)
+
+
+def draw_polygon_core(fd_image, points, fill, outline):
+    draw = ImageDraw.Draw(fd_image)
+    ps = []
+    for point in points:
+        if isinstance(point, dict):
+            ps.append((point['x'], point['y']))
+        elif isinstance(point, tuple):
+            ps.append(point)
+    draw.polygon(ps, fill, outline)
 
 
 class MegImage(object):
@@ -40,6 +53,16 @@ class MegImage(object):
             points = g['points']
             fill = g['fill'] if 'fill' in g else 128
             draw_points_core(fd_image, points, fill)
+        fd_image.save(saved_path, "JPEG")
+
+    @staticmethod
+    def draw_polygon(groups, image_path, saved_path):
+        fd_image = Image.open(image_path)
+        for g in groups:
+            points = g['points']
+            fill = g['fill'] if 'fill' in g else 128
+            outline = g['outline'] if 'outline' in g else 128
+            draw_polygon_core(fd_image, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
