@@ -1,6 +1,6 @@
 import sys
 import base64
-import requests
+import urllib2
 import cStringIO
 from PIL import ImageDraw, Image
 
@@ -35,7 +35,7 @@ def draw_polygon_core(draw, points, fill, outline):
     draw.polygon(ps, fill, outline)
 
 
-def draw_ellipse_core(draw, points, fill, outline):
+def draw_big_points_core(draw, points, fill, outline):
     for point in points:
         ps = []
         if isinstance(point, dict):
@@ -53,6 +53,21 @@ class MegImage(object):
         fd_image = Image.open(image_path)
         draw = ImageDraw.Draw(fd_image)
         draw_points_core(draw, points, fill)
+        fd_image.save(saved_path, "JPEG")
+
+    @staticmethod
+    def draw_rects_and_points(rects_groups, points_groups, image_path, saved_path):
+        fd_image = Image.open(image_path)
+        draw = ImageDraw.Draw(fd_image)
+        for g in rects_groups:
+            rects = g['rects']
+            fill = g['fill'] if 'fill' in g else (0, 0, 0)
+            draw_rects_core(draw, rects, fill=fill)
+        for g in points_groups:
+            points = g['points']
+            fill = g['fill'] if 'fill' in g else (0, 0, 0)
+            outline = g['outline'] if 'outline' in g else None
+            draw_big_points_core(draw, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
@@ -77,14 +92,14 @@ class MegImage(object):
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
-    def draw_ellipse(groups, image_path, saved_path):
+    def draw_big_points(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
         draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
             fill = g['fill'] if 'fill' in g else (0, 0, 0)
             outline = g['outline'] if 'outline' in g else None
-            draw_ellipse_core(draw, points, fill, outline)
+            draw_big_points_core(draw, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
@@ -96,9 +111,11 @@ class MegImage(object):
 
     @staticmethod
     def download_from_net(image_url, local_path):
-        #pic_f = urllib2.urlopen(image_url)
-        response = requests.get(image_url)
-        cur_image = Image.open(cStringIO.StringIO(response.content))
+        response = urllib2.urlopen(image_url)
+        cur_image = Image.open(cStringIO.StringIO(response.read()))
+        #import requests
+        #response = requests.get(image_url)
+        #cur_image = Image.open(cStringIO.StringIO(response.content))
         cur_image.save(local_path, "JPEG")
         if cur_image:
             cur_image.close()
