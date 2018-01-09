@@ -47,7 +47,7 @@ def draw_big_points_core(draw, points, fill, outline):
         draw.ellipse(ps, fill, outline)
 
 
-def image_rgba2rgb(image, fill_color=''):
+def image_discard_alpha(image, fill_color=''):
     if image.mode in ('RGBA', 'LA'):
         background = Image.new(image.mode[:-1], image.size, fill_color)
         background.paste(image, image.split()[-1])
@@ -55,11 +55,18 @@ def image_rgba2rgb(image, fill_color=''):
     return image
 
 
+def default_fill_color(image):
+    if image.mode in ('RGB', 'RGBA'):
+        return (0, 0, 0)
+    elif image.mode in ('L', 'LA'):
+        return 0
+
+
 class MegImage(object):
     @staticmethod
     def draw_points(points, image_path, saved_path, fill=128):
         fd_image = Image.open(image_path)
-        fd_image = image_rgba2rgb(fd_image)
+        fd_image = image_discard_alpha(fd_image)
         draw = ImageDraw.Draw(fd_image)
         draw_points_core(draw, points, fill)
         fd_image.save(saved_path, "JPEG")
@@ -67,15 +74,15 @@ class MegImage(object):
     @staticmethod
     def draw_rects_and_points(rects_groups, points_groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = image_rgba2rgb(fd_image)
+        fd_image = image_discard_alpha(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in rects_groups:
             rects = g['rects']
-            fill = g['fill'] if 'fill' in g else (0, 0, 0)
+            fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
             draw_rects_core(draw, rects, fill=fill)
         for g in points_groups:
             points = g['points']
-            fill = g['fill'] if 'fill' in g else (0, 0, 0)
+            fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
             outline = g['outline'] if 'outline' in g else None
             draw_big_points_core(draw, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
@@ -83,22 +90,22 @@ class MegImage(object):
     @staticmethod
     def draw_points_groups(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = image_rgba2rgb(fd_image)
+        fd_image = image_discard_alpha(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
-            fill = g['fill'] if 'fill' in g else (0, 0, 0)
+            fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
             draw_points_core(draw, points, fill=fill)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
     def draw_polygon(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = image_rgba2rgb(fd_image)
+        fd_image = image_discard_alpha(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
-            fill = g['fill'] if 'fill' in g else (0, 0, 0)
+            fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
             outline = g['outline'] if 'outline' in g else None
             draw_polygon_core(draw, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
@@ -106,11 +113,11 @@ class MegImage(object):
     @staticmethod
     def draw_big_points(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = image_rgba2rgb(fd_image)
+        fd_image = image_discard_alpha(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
-            fill = g['fill'] if 'fill' in g else (0, 0, 0)
+            fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
             outline = g['outline'] if 'outline' in g else None
             draw_big_points_core(draw, points, fill, outline)
         fd_image.save(saved_path, "JPEG")
@@ -118,7 +125,7 @@ class MegImage(object):
     @staticmethod
     def draw_rects(rects, image_path, saved_path, fill=(0, 0, 0)):
         fd_image = Image.open(image_path)
-        fd_image = image_rgba2rgb(fd_image)
+        fd_image = image_discard_alpha(fd_image)
         draw = ImageDraw.Draw(fd_image)
         draw_rects_core(draw, rects, fill)
         fd_image.save(saved_path, "JPEG")
@@ -127,7 +134,7 @@ class MegImage(object):
     def download_from_net(image_url, local_path):
         response = urllib2.urlopen(image_url)
         cur_image = Image.open(cStringIO.StringIO(response.read()))
-        cur_image = image_rgba2rgb(cur_image)
+        cur_image = image_discard_alpha(cur_image)
         #import requests
         #response = requests.get(image_url)
         #cur_image = Image.open(cStringIO.StringIO(response.content))
