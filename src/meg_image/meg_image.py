@@ -127,6 +127,7 @@ class MegImage(object):
     def download_from_net(image_url, local_path):
         response = urllib2.urlopen(image_url)
         cur_image = Image.open(cStringIO.StringIO(response.read()))
+        cur_image = image_rgba2rgb(cur_image)
         #import requests
         #response = requests.get(image_url)
         #cur_image = Image.open(cStringIO.StringIO(response.content))
