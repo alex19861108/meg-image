@@ -58,6 +58,7 @@ class MegImage(object):
     @staticmethod
     def draw_rects_and_points(rects_groups, points_groups, image_path, saved_path):
         fd_image = Image.open(image_path)
+        fd_image = fd_image.convert('RGB')
         draw = ImageDraw.Draw(fd_image)
         for g in rects_groups:
             rects = g['rects']
