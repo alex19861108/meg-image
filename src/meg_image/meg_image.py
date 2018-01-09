@@ -47,11 +47,19 @@ def draw_big_points_core(draw, points, fill, outline):
         draw.ellipse(ps, fill, outline)
 
 
+def image_rgba2rgb(image, fill_color=''):
+    if image.mode in ('RGBA', 'LA'):
+        background = Image.new(image.mode[:-1], image.size, fill_color)
+        background.paste(image, image.split()[-1])
+        image = background
+    return image
+
+
 class MegImage(object):
     @staticmethod
     def draw_points(points, image_path, saved_path, fill=128):
         fd_image = Image.open(image_path)
-        fd_image = fd_image.convert('RGB')
+        fd_image = image_rgba2rgb(fd_image)
         draw = ImageDraw.Draw(fd_image)
         draw_points_core(draw, points, fill)
         fd_image.save(saved_path, "JPEG")
@@ -59,7 +67,7 @@ class MegImage(object):
     @staticmethod
     def draw_rects_and_points(rects_groups, points_groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = fd_image.convert('RGB')
+        fd_image = image_rgba2rgb(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in rects_groups:
             rects = g['rects']
@@ -75,7 +83,7 @@ class MegImage(object):
     @staticmethod
     def draw_points_groups(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = fd_image.convert('RGB')
+        fd_image = image_rgba2rgb(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
@@ -86,7 +94,7 @@ class MegImage(object):
     @staticmethod
     def draw_polygon(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = fd_image.convert('RGB')
+        fd_image = image_rgba2rgb(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
@@ -98,7 +106,7 @@ class MegImage(object):
     @staticmethod
     def draw_big_points(groups, image_path, saved_path):
         fd_image = Image.open(image_path)
-        fd_image = fd_image.convert('RGB')
+        fd_image = image_rgba2rgb(fd_image)
         draw = ImageDraw.Draw(fd_image)
         for g in groups:
             points = g['points']
@@ -110,7 +118,7 @@ class MegImage(object):
     @staticmethod
     def draw_rects(rects, image_path, saved_path, fill=(0, 0, 0)):
         fd_image = Image.open(image_path)
-        fd_image = fd_image.convert('RGB')
+        fd_image = image_rgba2rgb(fd_image)
         draw = ImageDraw.Draw(fd_image)
         draw_rects_core(draw, rects, fill)
         fd_image.save(saved_path, "JPEG")
