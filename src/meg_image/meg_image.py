@@ -52,13 +52,14 @@ def image_discard_alpha(image, fill_color=''):
         background = Image.new(image.mode[:-1], image.size, fill_color)
         background.paste(image, image.split()[-1])
         image = background
+    image = image.convert('RGB')
     return image
 
 
 def default_fill_color(image):
     if image.mode in ('RGB', 'RGBA'):
         return (0, 0, 0)
-    elif image.mode in ('L', 'LA'):
+    else:
         return 0
 
 
