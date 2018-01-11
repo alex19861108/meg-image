@@ -2,7 +2,7 @@ import sys
 import base64
 import urllib2
 import cStringIO
-from PIL import ImageDraw, Image
+from PIL import ImageDraw, Image, ImageFont
 
 
 def draw_rects_core(draw, rects, fill):
@@ -47,14 +47,15 @@ def draw_big_points_core(draw, points, fill, outline):
         draw.ellipse(ps, fill, outline)
 
 
-def draw_texts_core(draw, contents, fill):
+def draw_texts_core(draw, contents, fill, fontsize=50):
+    font = ImageFont.truetype('simsun.ttc', fontsize)
     for content in contents:
         axis = content['axis']
         content = content['text']
         if isinstance(axis, dict):
-            draw.text((axis['x']+1, axis['y']+1), content, fill)
+            draw.text((axis['x']+1, axis['y']+1), content, font=font, fill=fill)
         elif isinstance(axis, tuple):
-            draw.text((axis[0] + 1, axis[0] + 1), content, fill)
+            draw.text((axis[0] + 1, axis[0] + 1), content, font=font, fill=fill)
 
 
 def image_discard_alpha(image, fill_color=''):
@@ -102,6 +103,7 @@ class MegImage(object):
     def draw_rects_and_texts(rects_groups, text_groups, image_path, saved_path):
         fd_image = Image.open(image_path)
         fd_image = image_discard_alpha(fd_image)
+        fontsize = fd_image.width / 50
         draw = ImageDraw.Draw(fd_image)
         for g in rects_groups:
             rects = g['rects']
@@ -110,7 +112,7 @@ class MegImage(object):
         for g in text_groups:
             texts = g['texts']
             fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
-            draw_texts_core(draw, texts, fill)
+            draw_texts_core(draw, texts, fill, fontsize=fontsize)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
