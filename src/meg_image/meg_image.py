@@ -47,6 +47,15 @@ def draw_big_points_core(draw, points, fill, outline):
         draw.ellipse(ps, fill, outline)
 
 
+def draw_texts_core(draw, texts, fill):
+    for text in texts:
+        ps = []
+        if isinstance(text, dict):
+            draw.text((text['x']+1, text['y']+1), text, fill)
+        elif isinstance(text, tuple):
+            draw.text((text[0] + 1, text[0] + 1), text, fill)
+
+
 def image_discard_alpha(image, fill_color=''):
     if image.mode in ('RGBA', 'LA'):
         background = Image.new(image.mode[:-1], image.size, fill_color)
@@ -86,6 +95,21 @@ class MegImage(object):
             fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
             outline = g['outline'] if 'outline' in g else None
             draw_big_points_core(draw, points, fill, outline)
+        fd_image.save(saved_path, "JPEG")
+
+    @staticmethod
+    def draw_rects_and_texts(rects_groups, text_groups, image_path, saved_path):
+        fd_image = Image.open(image_path)
+        fd_image = image_discard_alpha(fd_image)
+        draw = ImageDraw.Draw(fd_image)
+        for g in rects_groups:
+            rects = g['rects']
+            fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
+            draw_rects_core(draw, rects, fill=fill)
+        for g in text_groups:
+            texts = g['texts']
+            fill = g['fill'] if 'fill' in g else default_fill_color(fd_image)
+            draw_texts_core(draw, texts, fill)
         fd_image.save(saved_path, "JPEG")
 
     @staticmethod
