@@ -47,13 +47,14 @@ def draw_big_points_core(draw, points, fill, outline):
         draw.ellipse(ps, fill, outline)
 
 
-def draw_texts_core(draw, texts, fill):
-    for text in texts:
-        ps = []
-        if isinstance(text, dict):
-            draw.text((text['x']+1, text['y']+1), text, fill)
-        elif isinstance(text, tuple):
-            draw.text((text[0] + 1, text[0] + 1), text, fill)
+def draw_texts_core(draw, contents, fill):
+    for content in contents:
+        axis = content['axis']
+        content = content['text']
+        if isinstance(axis, dict):
+            draw.text((axis['x']+1, axis['y']+1), content, fill)
+        elif isinstance(axis, tuple):
+            draw.text((axis[0] + 1, axis[0] + 1), content, fill)
 
 
 def image_discard_alpha(image, fill_color=''):
