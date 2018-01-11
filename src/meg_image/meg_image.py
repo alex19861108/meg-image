@@ -48,7 +48,7 @@ def draw_big_points_core(draw, points, fill, outline):
 
 
 def draw_texts_core(draw, contents, fill, fontsize=50):
-    font = ImageFont.truetype('simsun.ttc', fontsize)
+    font = ImageFont.truetype(size=fontsize)
     for content in contents:
         axis = content['axis']
         content = content['text']
