@@ -48,7 +48,7 @@ def draw_big_points_core(draw, points, fill, outline):
 
 
 def draw_texts_core(draw, contents, fill, fontsize=50):
-    font = ImageFont.truetype(size=fontsize)
+    font = ImageFont.truetype("DejaVuSerif.ttf", size=fontsize)
     for content in contents:
         axis = content['axis']
         content = content['text']
@@ -58,9 +58,9 @@ def draw_texts_core(draw, contents, fill, fontsize=50):
             draw.text((axis[0] + 1, axis[0] + 1), content, font=font, fill=fill)
 
 
-def image_discard_alpha(image, fill_color=''):
+def image_discard_alpha(image):
     if image.mode in ('RGBA', 'LA'):
-        background = Image.new(image.mode[:-1], image.size, fill_color)
+        background = Image.new(image.mode[:-1], image.size, default_fill_color(image))
         background.paste(image, image.split()[-1])
         image = background
     image = image.convert('RGB')
