@@ -1,8 +1,13 @@
+import os
 import sys
 import base64
 import urllib2
 import cStringIO
 from PIL import ImageDraw, Image, ImageFont
+
+
+file_path = os.path.dirname(os.path.abspath(__file__))
+src_path = os.path.dirname(os.path.dirname(file_path))
 
 
 def draw_rects_core(draw, rects, fill):
@@ -48,7 +53,7 @@ def draw_big_points_core(draw, points, fill, outline):
 
 
 def draw_texts_core(draw, contents, fill, fontsize=50):
-    font = ImageFont.truetype("DejaVuSerif.ttf", size=fontsize)
+    font = ImageFont.truetype(os.path.join(src_path, 'fonts', 'DejaVuSerif.ttf'), size=fontsize)
     for content in contents:
         axis = content['axis']
         content = content['text']

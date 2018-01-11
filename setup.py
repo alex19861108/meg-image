@@ -8,6 +8,7 @@ setup(
     packages=PACKAGES,
     package_dir={'': 'src'},
     package_data={
+        'fonts': '*.ttf'
         },
     setup_requires=[],
     install_requires=[
