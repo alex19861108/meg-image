@@ -108,7 +108,7 @@ class MegImage(object):
     def draw_rects_and_texts(rects_groups, text_groups, image_path, saved_path):
         fd_image = Image.open(image_path)
         fd_image = image_discard_alpha(fd_image)
-        fontsize = fd_image.width / 40
+        fontsize = fd_image.width / 40 if fd_image.width > 200 else 20
         draw = ImageDraw.Draw(fd_image)
         for g in rects_groups:
             rects = g['rects']
